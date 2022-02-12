@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}{{article.article_title}}{% endblock %}
+
+{% block content %}
+    <h2>{{article.article_title}}</h2>
+    <p>{{article.article_text}}</p>
+    <p>{{article.pub_date}}</p>
+
+
+    {% if article.was_publish_recently %}
+        НОВАЯ ХРЕНЬ
+        {% endif %}
+    <hr>
+
+
+        {% if latest_comments_list%}
+            {% for c in latest_comments_list %}
+                <p>
+                    <strong>{{c.autor_name}}</strong>
+                    <p>{{c.comment_text}}</p>
+                </p>
+            {% endfor%}
+        {% else %}
+        коментов нет
+        {% endif%}
+
+
+    <hr>
+
+    <form action="{% url 'articles:leave_comment' article.id%}" method="POST">
+        {% csrf_token%}
+
+        <input type="text" required placeholder="text" name="name"><br>
+        <textarea name="text" required="" placeholder="коммент" cols="30" rows="10">
+        </textarea><br>
+
+        <button type="submit">оставить коммент </button>
+        
+    </form>
+
+{% endblock %} 
